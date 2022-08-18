@@ -7,3 +7,9 @@ Bot criado para fazer busca de produtos. Esse projeto foi criado para fazer a bu
 ## Melhorias
 
 - Implementar laço "for" para busca de mais produtos.
+
+## How to run
+
+```
+/index.html?id={Telegram Bot ID}&chat={Telegram Chat ID}&token={Telegram Bot Token}
+```
