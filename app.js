@@ -26,12 +26,15 @@ const url = `https://npreco.api-casasbahia.com.br/Produtos/PrecoVenda/?idsprodut
 const getData = () => {
     axios.get(url)
     .then((res) => {
-        let precoSemDesconto = res.data.PrecoProdutos[0].PrecoVenda.PrecoSemDesconto
-        let parcelamento = res.data.PrecoProdutos[0].PrecoVenda.Parcelamento
-        console.log(res.data.PrecoProdutos[0].PrecoVenda.PrecoSemDesconto)
-        console.log(res.data.PrecoProdutos[0].PrecoVenda.Parcelamento)
 
-        sendTelegramMessage(precoSemDesconto, parcelamento);
+        for (i = 0; i < res.data.PrecoProdutos.length; i++) {
+
+            let precoSemDesconto = res.data.PrecoProdutos[i].PrecoVenda.PrecoSemDesconto
+            let parcelamento = res.data.PrecoProdutos[i].PrecoVenda.Parcelamento
+    
+            sendTelegramMessage(precoSemDesconto, parcelamento); 
+        }
+        
     })
     .catch(console.error)
 }
@@ -47,4 +50,4 @@ function sendTelegramMessage (precoSemDesconto, parcelamento) {
 
 setInterval (() => {
     getData();
-}, 5000);
+}, 10000);
