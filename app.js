@@ -1,3 +1,6 @@
+const axios = require('axios');
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
 let botId = getParam('id');
 let chatId = getParam('chat');
 let botToken = getParam('token');
@@ -18,22 +21,19 @@ let products = [
     46838756
 ].join(',');
 
-let myRequest = new Request(`https://npreco.api-casasbahia.com.br/Produtos/PrecoVenda/?idsproduto=${products}&composicao=DescontoFormaPagamento`, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    mode: 'cors',
-    cache: 'default'
-});
+const url = `https://npreco.api-casasbahia.com.br/Produtos/PrecoVenda/?idsproduto=${products}&composicao=DescontoFormaPagamento`
 
-function fetchData () {
-    fetch(myRequest).then(function(res) {
-        return res.json()
-    }).then(function(data) {
-        let { PrecoSemDesconto, Parcelamento } = data.PrecoProdutos[0].PrecoVenda;
-        sendTelegramMessage(PrecoSemDesconto, Parcelamento);
+const getData = () => {
+    axios.get(url)
+    .then((res) => {
+        let precoSemDesconto = res.data.PrecoProdutos[0].PrecoVenda.PrecoSemDesconto
+        let parcelamento = res.data.PrecoProdutos[0].PrecoVenda.Parcelamento
+        console.log(res.data.PrecoProdutos[0].PrecoVenda.PrecoSemDesconto)
+        console.log(res.data.PrecoProdutos[0].PrecoVenda.Parcelamento)
+
+        sendTelegramMessage(precoSemDesconto, parcelamento);
     })
+    .catch(console.error)
 }
 
 function sendTelegramMessage (precoSemDesconto, parcelamento) {
@@ -45,10 +45,6 @@ function sendTelegramMessage (precoSemDesconto, parcelamento) {
     xhr.send();
 }
 
-function getParam(param) {
-    return new URLSearchParams(window.location.search).get(param);
-}
-
 setInterval (() => {
-    fetchData();
+    getData();
 }, 5000);
