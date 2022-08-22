@@ -27,7 +27,7 @@ const url = `https://npreco.api-casasbahia.com.br/Produtos/PrecoVenda/?idsprodut
 const getData = () => {
     axios.get(url).then((res) => {
         for (i = 0; i < res.data.PrecoProdutos.length; i++) {
-            let { PrecoSemDesconto, Parcelamento, DisponibilidadeEstoque } = res.data.PrecoProdutos[0].PrecoVenda;
+            let { PrecoSemDesconto, Parcelamento, DisponibilidadeEstoque } = res.data.PrecoProdutos[i].PrecoVenda;
             let disponibilidade =  DisponibilidadeEstoque.toString()
 
             sendTelegramMessage(PrecoSemDesconto, Parcelamento, disponibilidade); 
