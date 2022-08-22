@@ -6,6 +6,4 @@ Bot criado para fazer busca de produtos. Esse projeto foi criado para fazer a bu
 
 ## How to run
 
-```
-/index.html?id={Telegram Bot ID}&chat={Telegram Chat ID}&token={Telegram Bot Token}
-```
+Use .env.example to create .env file
