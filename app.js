@@ -1,9 +1,10 @@
+require('dotenv').config();
 const axios = require('axios');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-let botId = getParam('id');
-let chatId = getParam('chat');
-let botToken = getParam('token');
+let botId = process.env.BOT_ID
+let botToken = process.env.BOT_TOKEN
+let chatId = process.env.CHAT_ID
 
 let products = [
     12814057, // Pneu
@@ -31,17 +32,21 @@ const getData = () => {
 
             let precoSemDesconto = res.data.PrecoProdutos[i].PrecoVenda.PrecoSemDesconto
             let parcelamento = res.data.PrecoProdutos[i].PrecoVenda.Parcelamento
+            let estoque = res.data.PrecoProdutos[i].PrecoVenda.DisponibilidadeEstoque
+            let disponibilidade =  estoque.toString()
+
+            console.log(disponibilidade)
     
-            sendTelegramMessage(precoSemDesconto, parcelamento); 
+            sendTelegramMessage(precoSemDesconto, parcelamento, disponibilidade); 
         }
         
     })
     .catch(console.error)
 }
 
-function sendTelegramMessage (precoSemDesconto, parcelamento) {
+function sendTelegramMessage (precoSemDesconto, parcelamento, disponibilidade) {
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", `https://api.telegram.org/bot${botId}:${botToken}/sendMessage?chat_id=${chatId}&text=${precoSemDesconto}%20${parcelamento}`);
+    xhr.open("POST", `https://api.telegram.org/bot${botId}:${botToken}/sendMessage?chat_id=${chatId}&text=Loja%20Casas%20Bahia%0APreco%20${precoSemDesconto}%0AParcelamento%20${parcelamento}%0ADisponibilidade%20${disponibilidade}`);
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = () => console.log(xhr.responseText);
@@ -50,4 +55,4 @@ function sendTelegramMessage (precoSemDesconto, parcelamento) {
 
 setInterval (() => {
     getData();
-}, 10000);
+}, 6000);
