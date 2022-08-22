@@ -34,8 +34,6 @@ const getData = () => {
             let parcelamento = res.data.PrecoProdutos[i].PrecoVenda.Parcelamento
             let estoque = res.data.PrecoProdutos[i].PrecoVenda.DisponibilidadeEstoque
             let disponibilidade =  estoque.toString()
-
-            console.log(disponibilidade)
     
             sendTelegramMessage(precoSemDesconto, parcelamento, disponibilidade); 
         }
