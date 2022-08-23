@@ -28,7 +28,10 @@ const getData = () => {
     axios.get(url).then((res) => {
         for (i = 0; i < res.data.PrecoProdutos.length; i++) {
             let { PrecoSemDesconto, Parcelamento, DisponibilidadeEstoque } = res.data.PrecoProdutos[i].PrecoVenda;
-            let disponibilidade =  DisponibilidadeEstoque.toString()
+
+            if (DisponibilidadeEstoque == true) {
+                var disponibilidade =  DisponibilidadeEstoque.toString()
+            }
 
             sendTelegramMessage(PrecoSemDesconto, Parcelamento, disponibilidade); 
         }
