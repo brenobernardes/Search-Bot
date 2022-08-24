@@ -31,9 +31,8 @@ const getData = () => {
 
             if (DisponibilidadeEstoque == true) {
                 var disponibilidade =  DisponibilidadeEstoque.toString()
+                sendTelegramMessage(PrecoSemDesconto, Parcelamento, disponibilidade); 
             }
-
-            sendTelegramMessage(PrecoSemDesconto, Parcelamento, disponibilidade); 
         }
     }).catch(console.error)
 }
